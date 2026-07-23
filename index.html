@@ -30,7 +30,7 @@
             const data=await res.json();
             console.log("Api üzerinden gelen veri:",data);
             const sicaklikDegeri=data.current_weather.temperature;
-            document.getElementById("pId").innerHTML="Sicaklik:"+sicaklikDegeri;
+            document.getElementById("pId").innerHTML = `Sıcaklık: ${sicaklikDegeri} °C`;
         })
     </script>
 </body>
