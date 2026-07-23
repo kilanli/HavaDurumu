@@ -25,6 +25,12 @@
             const sonucMetni=document.getElementById("pId");
             const secilenSehir=sehirSecimi.value;
             console.log(`Seçilen şehir:${secilenSehir}`);
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=41.01&longitude=28.97&current_weather=true`;
+            const res=await fetch(url);
+            const data=await res.json();
+            console.log("Api üzerinden gelen veri:",data);
+            const sicaklikDegeri=data.current_weather.temperature;
+            document.getElementById("pId").innerHTML="Sicaklik:"+sicaklikDegeri;
         })
     </script>
 </body>
