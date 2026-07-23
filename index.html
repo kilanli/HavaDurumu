@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hava Durumu</title>
+</head>
+<body>
+    <div>
+        <select name="" id="selectId">
+            <option value="İstanbul">İstanbul</option>
+            <option  value="Ankara">Ankara</option>
+        </select>
+    </div>
+    <div>
+        <Button id="buttonId">Şehir seç</Button>
+    </div>
+    <div>
+        <p id="pId">Hava Durumu:</p>
+    </div>
+    <script>
+        const button=document.getElementById("buttonId");
+        button.addEventListener("click",async()=>{ //api'den veri çekiyoruz veri çekiminde beklememek için
+            const sehirSecimi=document.getElementById("selectId");
+            const sonucMetni=document.getElementById("pId");
+            const secilenSehir=sehirSecimi.value;
+            console.log(`Seçilen şehir:${secilenSehir}`);
+        })
+    </script>
+</body>
+</html>
