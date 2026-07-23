@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,31 +7,39 @@
 </head>
 <body>
     <div>
-        <select name="" id="selectId">
-            <option value="İstanbul">İstanbul</option>
-            <option  value="Ankara">Ankara</option>
-        </select>
+        <input type="text" id="inputId" placeholder="Şehir adı giriniz">
+        <button id="buttonId">Hava Durumunu Getir</button>
+        <p id="pId">Hava Durumu: -</p>
     </div>
-    <div>
-        <Button id="buttonId">Şehir seç</Button>
-    </div>
-    <div>
-        <p id="pId">Hava Durumu:</p>
-    </div>
+
     <script>
-        const button=document.getElementById("buttonId");
-        button.addEventListener("click",async()=>{ //api'den veri çekiyoruz veri çekiminde beklememek için
-            const sehirSecimi=document.getElementById("selectId");
-            const sonucMetni=document.getElementById("pId");
-            const secilenSehir=sehirSecimi.value;
-            console.log(`Seçilen şehir:${secilenSehir}`);
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=41.01&longitude=28.97&current_weather=true`;
-            const res=await fetch(url);
-            const data=await res.json();
-            console.log("Api üzerinden gelen veri:",data);
-            const sicaklikDegeri=data.current_weather.temperature;
-            document.getElementById("pId").innerHTML = `Sıcaklık: ${sicaklikDegeri} °C`;
-        })
+        const button = document.getElementById("buttonId");
+        const input = document.getElementById("inputId");
+        const sonucMetni = document.getElementById("pId");
+
+        button.addEventListener("click", async () => {
+            const sehir = input.value;
+
+            // 1. Şehir koordinatlarını al
+            const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${sehir}`);
+            const geoData = await geoRes.json();
+            console.log("Gelen Geocoding verisi:", geoData);
+            if(geoData.results && geoData.results.length>0){
+            const enlem = geoData.results[0].latitude;
+            const boylam = geoData.results[0].longitude;
+
+            // 2. Hava durumunu al
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${enlem}&longitude=${boylam}&current_weather=true`);
+            const weatherData = await weatherRes.json();
+
+            // 3. Ekrana yazdır
+            const sicaklik = weatherData.current_weather.temperature;
+            sonucMetni.innerHTML = `Sıcaklık: ${sicaklik} °C`;
+            }
+            else{
+                sonucMetni.innerHTML="Değer görüntüleyebilmek için geçerli bir şehir giriniz.";
+            }            
+        });
     </script>
 </body>
 </html>
